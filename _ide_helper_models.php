@@ -10,3 +10,27 @@
  */
 
 
+namespace App{
+/**
+ * App\Project
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Project newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Project newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Project query()
+ */
+	class Project extends \Eloquent {}
+}
+
+namespace App{
+/**
+ * App\User
+ *
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User query()
+ */
+	class User extends \Eloquent {}
+}
+
