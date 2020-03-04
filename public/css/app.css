@@ -10000,7 +10000,7 @@ video {
   color: #a0aec0;
 }
 
-.text-gray-600 {
+. text-gray-600 {
   color: #718096;
 }
 
@@ -13963,6 +13963,27 @@ video {
 
 .duration-1000 {
   transition-duration: 1000ms;
+}
+
+.button {
+  background-color: #4299e1;
+  color: #fff;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.25rem;
+}
+
+.button:hover {
+  background-color: #2b6cb0;
+}
+
+.card {
+  padding: 1.25rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 @media (min-width: 640px) {
