@@ -20,16 +20,17 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 
-<body class="bg-gray-200">
+<body class="bg-gray-100">
     <div id="app">
         <nav class="bg-white">
             <div class="container mx-auto">
 
                 <div class="flex justify-between items-center py-2">
 
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                    <a class="navbar-brand pr-3" href="{{ url('/') }}">
+                        <img src="/images/logo.svg" alt="Birdboard">
                     </a>
+                    <div class="flex mr-auto text-2xl items-center"><a href="/">birdboard</a><a href="/" class="pl-2 text-sm text-gray-600 ">feathere remainders</a></div>
 
                         <div class="">
                             <!-- Left Side Of Navbar -->
