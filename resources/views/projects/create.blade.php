@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.0/css/bulma.min.css">--}}
-
 
     <form action="/projects" method="POST">
         @csrf
