@@ -17,7 +17,7 @@
 
             <div class="lg:w-3/4 px-3 mb-6">
                 <div class="mb-8">
-                    <h2 class="text-lg text-gray-600 mb-3">Tasks</h2>
+                    <h2 class="text-lg text-gray-600 mb-1">Tasks</h2>
 
                     @foreach($project->tasks as $task)
                         <div class="card mb-3">
@@ -25,9 +25,9 @@
                                 @method('PATCH')
                                 @csrf
 
-                                <div class="flex">
-                                    <input class="w-full {{$task->completed ? 'text-gray-500' : ''}}" name="body" value="{{$task->body}}">
-                                    <input type="checkbox" name="completed" value="" onchange="this.form.submit()" {{$task->completed ? 'checked' : ''}}>
+                                <div class="flex items-center">
+                                    <input name="body" value="{{ $task->body }}" class="w-full {{ $task->completed ? 'text-gray-500' : '' }}" >
+                                    <input name="completed" type="checkbox" onChange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}>
                                 </div>
 
                             </form>
@@ -62,8 +62,9 @@
                 </div>
             </div>
 
-            <div class="lg:w-1/3 px-3 pb-6">
+            <div class="lg:w-1/4 px-3 lg:py-8">
                 @include('projects.card')
+                @include('projects.activity.card')
             </div>
 
 
