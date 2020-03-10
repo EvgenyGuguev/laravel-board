@@ -47,10 +47,19 @@ class ProjectsController extends Controller
         return redirect($project->path());
     }
 
+    public function destroy(Project $project)
+    {
+        $this->authorize('update', $project);
+
+        $project->delete();
+
+        return redirect('/projects');
+    }
+
     /**
      * @return array
      */
-    public function validateRequest(): array
+    protected function validateRequest(): array
     {
         return  (\request()->validate([
             'title' => 'sometimes|required',
