@@ -1955,6 +1955,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _BoardForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BoardForm */ "./resources/js/components/BoardForm.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2011,55 +2012,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      form: {
+      form: new _BoardForm__WEBPACK_IMPORTED_MODULE_1__["default"]({
         title: '',
         description: '',
         tasks: [{
-          value: ''
+          body: ''
         }]
-      },
-      errors: {}
+      })
     };
   },
   methods: {
     addTask: function addTask() {
       this.form.tasks.push({
-        value: ''
+        body: ''
       });
     },
     submit: function submit() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return axios.post('/projects', _this.form);
+                if (!_this.form.tasks[0].body) {
+                  delete _this.form.originalData.tasks;
+                }
 
-              case 3:
-                response = _context.sent;
-                location = response.data.message;
-                _context.next = 10;
-                break;
+                _this.form.submit('/projects').then(function (response) {
+                  return location = response.data.message;
+                });
 
-              case 7:
-                _context.prev = 7;
-                _context.t0 = _context["catch"](0);
-                _this.errors = _context.t0.response.data.errors;
-
-              case 10:
+              case 2:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 7]]);
+        }, _callee);
       }))();
     }
   }
@@ -37288,7 +37281,7 @@ var runtime = (function (exports) {
     return { __await: arg };
   };
 
-  function AsyncIterator(generator) {
+  function AsyncIterator(generator, PromiseImpl) {
     function invoke(method, arg, resolve, reject) {
       var record = tryCatch(generator[method], generator, arg);
       if (record.type === "throw") {
@@ -37299,14 +37292,14 @@ var runtime = (function (exports) {
         if (value &&
             typeof value === "object" &&
             hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function(value) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
             invoke("next", value, resolve, reject);
           }, function(err) {
             invoke("throw", err, resolve, reject);
           });
         }
 
-        return Promise.resolve(value).then(function(unwrapped) {
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
           // When a yielded Promise is resolved, its final value becomes
           // the .value of the Promise<{value,done}> result for the
           // current iteration.
@@ -37324,7 +37317,7 @@ var runtime = (function (exports) {
 
     function enqueue(method, arg) {
       function callInvokeWithMethodAndArg() {
-        return new Promise(function(resolve, reject) {
+        return new PromiseImpl(function(resolve, reject) {
           invoke(method, arg, resolve, reject);
         });
       }
@@ -37364,9 +37357,12 @@ var runtime = (function (exports) {
   // Note that simple async functions are implemented on top of
   // AsyncIterator objects; they just return a Promise for the value of
   // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList) {
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
     var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList)
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
     );
 
     return exports.isGeneratorFunction(outerFn)
@@ -38276,7 +38272,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "rounded border p-2 text-xs w-full",
-                  class: _vm.errors.title ? "border-red-500" : "border",
+                  class: _vm.form.errors.title ? "border-red-500" : "border",
                   attrs: { type: "text", id: "title" },
                   domProps: { value: _vm.form.title },
                   on: {
@@ -38289,10 +38285,12 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.errors.title
+                _vm.form.errors.title
                   ? _c("span", {
                       staticClass: "text-sm italic text-red-500",
-                      domProps: { textContent: _vm._s(_vm.errors.title[0]) }
+                      domProps: {
+                        textContent: _vm._s(_vm.form.errors.title[0])
+                      }
                     })
                   : _vm._e()
               ]),
@@ -38314,7 +38312,9 @@ var render = function() {
                     }
                   ],
                   staticClass: "rounded border p-2 text-xs w-full",
-                  class: _vm.errors.description ? "border-red-500" : "border",
+                  class: _vm.form.errors.description
+                    ? "border-red-500"
+                    : "border",
                   attrs: { id: "description", rows: "7" },
                   domProps: { value: _vm.form.description },
                   on: {
@@ -38327,11 +38327,11 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.errors.description
+                _vm.form.errors.description
                   ? _c("span", {
                       staticClass: "text-sm italic text-red-500",
                       domProps: {
-                        textContent: _vm._s(_vm.errors.description[0])
+                        textContent: _vm._s(_vm.form.errors.description[0])
                       }
                     })
                   : _vm._e()
@@ -38353,19 +38353,19 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: task.value,
-                          expression: "task.value"
+                          value: task.body,
+                          expression: "task.body"
                         }
                       ],
                       staticClass: "rounded border mb-2 p-2 w-full",
                       attrs: { type: "text", placeholder: "task 1" },
-                      domProps: { value: task.value },
+                      domProps: { value: task.body },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(task, "value", $event.target.value)
+                          _vm.$set(task, "body", $event.target.value)
                         }
                       }
                     })
@@ -38378,6 +38378,7 @@ var render = function() {
                 "button",
                 {
                   staticClass: "inline-flex items-center text-sm",
+                  attrs: { type: "button" },
                   on: { click: _vm.addTask }
                 },
                 [
@@ -38435,7 +38436,7 @@ var render = function() {
               "button",
               {
                 staticClass: "mr-3 button-white",
-                attrs: { type: "submit" },
+                attrs: { type: "button" },
                 on: {
                   click: function($event) {
                     return _vm.$modal.hide("new-project")
@@ -38445,9 +38446,7 @@ var render = function() {
               [_vm._v("Cancel")]
             ),
             _vm._v(" "),
-            _c("button", { staticClass: "button", attrs: { type: "submit" } }, [
-              _vm._v("Create Project")
-            ])
+            _c("button", { staticClass: "button" }, [_vm._v("Create Project")])
           ])
         ]
       )
@@ -50708,6 +50707,90 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/components/BoardForm.js":
+/*!**********************************************!*\
+  !*** ./resources/js/components/BoardForm.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var BoardForm = /*#__PURE__*/function () {
+  function BoardForm(data) {
+    _classCallCheck(this, BoardForm);
+
+    this.originalData = JSON.parse(JSON.stringify(data));
+    Object.assign(this, data);
+    this.errors = {};
+    this.submitted = false;
+  }
+
+  _createClass(BoardForm, [{
+    key: "data",
+    value: function data() {
+      var _this = this;
+
+      return Object.keys(this.originalData).reduce(function (data, attribute) {
+        data[attribute] = _this[attribute];
+        return data;
+      }, {});
+    }
+  }, {
+    key: "post",
+    value: function post(endpoint) {
+      return this.submit(endpoint);
+    }
+  }, {
+    key: "patch",
+    value: function patch(endpoint) {
+      return this.submit(endpoint, 'patch');
+    }
+  }, {
+    key: "delete",
+    value: function _delete(endpoint) {
+      return this.submit(endpoint, 'delete');
+    }
+  }, {
+    key: "submit",
+    value: function submit(endpoint) {
+      var requestType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'post';
+      return axios[requestType](endpoint, this.data())["catch"](this.onFail.bind(this)).then(this.onSuccess.bind(this));
+    }
+  }, {
+    key: "onSuccess",
+    value: function onSuccess(response) {
+      this.submitted = true;
+      this.errors = {};
+      return response;
+    }
+  }, {
+    key: "onFail",
+    value: function onFail(error) {
+      this.errors = error.response.data.errors;
+      this.submitted = false;
+      throw error;
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      Object.assign(this, this.originalData);
+    }
+  }]);
+
+  return BoardForm;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (BoardForm);
+
+/***/ }),
+
 /***/ "./resources/js/components/ExampleComponent.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/ExampleComponent.vue ***!
@@ -50864,8 +50947,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Domains\laravel-board\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Domains\laravel-board\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

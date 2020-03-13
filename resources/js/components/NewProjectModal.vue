@@ -7,24 +7,24 @@
                 <div class="flex-1 mr-4">
                     <div class="mb-4">
                         <label for="title" class="block mb-2">Title</label>
-                        <input type="text" id="title" class="rounded border p-2 text-xs w-full" :class="errors.title ? 'border-red-500' : 'border'" v-model="form.title">
-                        <span class="text-sm italic text-red-500" v-if="errors.title" v-text="errors.title[0]"></span>
+                        <input type="text" id="title" class="rounded border p-2 text-xs w-full" :class="form.errors.title ? 'border-red-500' : 'border'" v-model="form.title">
+                        <span class="text-sm italic text-red-500" v-if="form.errors.title" v-text="form.errors.title[0]"></span>
                     </div>
 
                     <div class="mb-4">
                         <label for="description" class="block mb-2">Description</label>
-                        <textarea id="description" class="rounded border p-2 text-xs w-full" rows="7" :class="errors.description ? 'border-red-500' : 'border'" v-model="form.description"> </textarea>
-                        <span class="text-sm italic text-red-500" v-if="errors.description" v-text="errors.description[0]"></span>
+                        <textarea id="description" class="rounded border p-2 text-xs w-full" rows="7" :class="form.errors.description ? 'border-red-500' : 'border'" v-model="form.description"> </textarea>
+                        <span class="text-sm italic text-red-500" v-if="form.errors.description" v-text="form.errors.description[0]"></span>
                     </div>
                 </div>
 
                 <div class="flex-1 ml-4">
                     <div class="mb-4">
                         <label class="block mb-2">Need Some Tasks?</label>
-                        <input type="text" class="rounded border mb-2 p-2 w-full" placeholder="task 1" v-for="task in form.tasks" v-model="task.value">
+                        <input type="text" class="rounded border mb-2 p-2 w-full" placeholder="task 1" v-for="task in form.tasks" v-model="task.body">
                     </div>
 
-                    <button class="inline-flex items-center text-sm" @click="addTask">
+                    <button type="button" class="inline-flex items-center text-sm" @click="addTask">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="mr-2">
                             <g fill="none" fill-rule="evenodd" opacity=".307">
                                 <path stroke="#000" stroke-opacity=".012" stroke-width="0" d="M-3-3h24v24H-3z"></path>
@@ -39,8 +39,8 @@
             </div>
 
             <footer class="flex justify-end">
-                <button type="submit" class="mr-3 button-white" @click="$modal.hide('new-project')">Cancel</button>
-                <button type="submit" class="button">Create Project</button>
+                <button type="button" class="mr-3 button-white" @click="$modal.hide('new-project')">Cancel</button>
+                <button class="button">Create Project</button>
             </footer>
 
         </form>
@@ -49,32 +49,32 @@
 </template>
 
 <script>
+    import BoardForm from './BoardForm';
+
     export default {
         data() {
             return {
-                form: {
+                form: new BoardForm({
                     title: '',
                     description: '',
                     tasks: [
-                        { value: '' },
+                        { body: ''},
                     ]
-                },
-                errors: {}
-
+                })
             };
         },
         methods: {
             addTask() {
-                this.form.tasks.push({ value: '' });
+                this.form.tasks.push({ body: '' });
             },
-            async submit() {
-                try {
-                    let response = await axios.post('/projects', this.form);
 
-                    location = response.data.message;
-                } catch (error) {
-                    this.errors = error.response.data.errors;
+            async submit() {
+                if (! this.form.tasks[0].body) {
+                    delete this.form.originalData.tasks;
                 }
+
+                this.form.submit('/projects')
+                    .then(response => location = response.data.message);
             }
         }
     }
