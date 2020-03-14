@@ -33,3 +33,12 @@
 .card {
     @apply .p-5 .bg-white .rounded-lg .shadow;
 }
+
+.dropdown-menu-link {
+    @apply .block .leading-loose .px-4;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.1);
+    }
+}
+

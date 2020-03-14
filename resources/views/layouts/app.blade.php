@@ -30,45 +30,45 @@
                     <a class="navbar-brand pr-3" href="{{ url('/') }}">
                         <img src="/images/logo.svg" alt="Birdboard">
                     </a>
-                    <div class="flex mr-auto text-2xl items-center"><a href="/">birdboard</a><a href="/" class="pl-2 text-sm text-gray-600 ">feathere remainders</a></div>
+                    <div class="flex mr-auto text-2xl items-center"><a href="/">Laravel-Board</a><a href="/" class="pl-2 text-sm text-gray-600 ">demo project</a></div>
 
-                        <div class="">
-                            <!-- Left Side Of Navbar -->
-                            <ul class="navbar-nav mr-auto"></ul>
+                    <div>
+                        <!-- Right Side Of Navbar -->
+                        <div class="flex items-center ml-auto">
+                            <!-- Authentication Links -->
+                            @guest
+                                <a class="" href="{{ route('login') }}">{{ __('Login') }}</a>
 
-                            <!-- Right Side Of Navbar -->
-                            <ul class="navbar-nav ml-auto">
-                                <!-- Authentication Links -->
-                                @guest
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                    </li>
-                                    @if (Route::has('register'))
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                        </li>
-                                    @endif
+                                @if (Route::has('register'))
+                                    <a class="ml-2" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                @endif
+
                                 @else
-                                    <li class="nav-item dropdown">
-                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                            {{ Auth::user()->name }} <span class="caret"></span>
-                                        </a>
 
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                               onclick="event.preventDefault();
+                                <dropdown align="right" width="200px">
+                                    <template v-slot:trigger>
+                                        <button class="flex items-center text-default no-underline text-sm focus:outline-none">
+                                            <img width="35" class="rounded-full mr-3" src="{{ gravatar_url(auth()->user()->email) }}">
+
+                                            {{ auth()->user()->name }}
+                                        </button>
+                                    </template>
+
+                                    <a class="dropdown-menu-link" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
                                                              document.getElementById('logout-form').submit();">
-                                                {{ __('Logout') }}
-                                            </a>
+                                        {{ __('Logout') }}
+                                    </a>
 
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                                @csrf
-                                            </form>
-                                        </div>
-                                    </li>
-                                @endguest
-                            </ul>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+
+                                </dropdown>
+
+                            @endguest
                         </div>
+                    </div>
                 </div>
             </div>
         </nav>
